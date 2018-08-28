@@ -17,6 +17,8 @@ factoryConfiguration.json
 .idea/**/tasks.xml
 .idea/dictionaries
 
+target
+target/
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids

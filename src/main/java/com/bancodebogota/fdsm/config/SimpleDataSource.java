@@ -20,6 +20,11 @@ import org.apache.commons.dbcp2.BasicDataSource;
  * @author jpramirez
  */
 public class SimpleDataSource {
+    
+      private static final String URL = "jdbc:mysql://localhost/sample";
+      private static final String USER = "root";
+      private static final String PASSORD = "rootroot";
+    
       public SimpleDataSource() {
 
         System.out.println("Setting up data source.");
@@ -55,6 +60,11 @@ public class SimpleDataSource {
             try { if (conn != null) conn.close(); } catch(Exception e) { }
         }
     }
+    
+     public static DataSource setupDataSource() {
+           return setupDataSource(URL, USER, PASSORD);
+    }
+      
 
     public static DataSource setupDataSource(String connectURI, String user, String pass) {
         BasicDataSource ds = new BasicDataSource();

@@ -45,6 +45,12 @@ public class SimpleDataSource {
             System.out.println("Results:");
             System.out.println("Results:-------------------------");
             int numcols = rset.getMetaData().getColumnCount();
+
+            for(int i=1;i<=numcols;i++) {
+                System.out.print("\t" + rset.getMetaData().getColumnName(i));
+            }
+            System.out.println("");
+           
              System.out.println("Columns--------------------------:"+numcols);
             while(rset.next()) {
                 for(int i=1;i<=numcols;i++) {

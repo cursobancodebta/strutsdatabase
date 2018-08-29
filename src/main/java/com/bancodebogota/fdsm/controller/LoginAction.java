@@ -5,11 +5,13 @@
  */
 package com.bancodebogota.fdsm.controller;
 
-import com.bancodebogota.fdsm.dao.LoginDao;
+ import com.bancodebogota.fdsm.dao.LoginDao;
 import com.bancodebogota.fdsm.dao.LoginDaoImpl;
 import com.bancodebogota.fdsm.dao.LoginDaoJpaImpl;
 import com.bancodebogota.fdsm.dto.UserDto;
 import com.opensymphony.xwork2.ActionSupport;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
 import org.apache.struts2.util.ServletContextAware;
 import org.hibernate.SessionFactory;
@@ -39,6 +41,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware {
         if(us==null){
              return ERROR;
         }else{
+            this.userDto = us;
             return SUCCESS+"Tiles";
         }     
     }
@@ -46,18 +49,20 @@ public class LoginAction extends ActionSupport implements ServletContextAware {
    
     public String executeJpa() {
         //userDto = new UserDto();
-        LoginDao loginDao = new LoginDaoJpaImpl(getSF());
+        LoginDao loginDao = new LoginDaoJpaImpl(getEM());
         UserDto us = loginDao.obtenerUsuario(userDto);
         if(us==null){
              return ERROR;
         }else{
+            this.userDto = us;
             return SUCCESS+"Tiles";
         }     
     }
 
     public void validate() {
-        if (userDto.getName().length() == 0) {
-            addFieldError("userDto.name", "Name is required.");
+        if (  userDto.getLogin().length() == 0) {
+
+            addFieldError("userDto.login", "Login is required.");
         }
 
         if (userDto.getPassword().length() == 0) {
@@ -70,9 +75,9 @@ public class LoginAction extends ActionSupport implements ServletContextAware {
         this.ctx = sc;
     }
     
-    private SessionFactory getSF(){
-        SessionFactory sf = (SessionFactory) ctx.getAttribute("SessionFactory");
-        return sf;
+    private EntityManager getEM(){
+        EntityManagerFactory emf = (EntityManagerFactory) ctx.getAttribute("EntityManagerFactory");
+        return emf.createEntityManager();
     }
             
 }

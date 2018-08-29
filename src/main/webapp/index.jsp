@@ -16,7 +16,7 @@
     <body>
 
 <s:form action="login">  
-<s:textfield name="userDto.name" label="Name"></s:textfield>  
+<s:textfield name="userDto.login" label="Login"></s:textfield>  
 <s:password name="userDto.password" label="Password"></s:password>  
 <s:submit value="login"></s:submit>  
 </s:form>         

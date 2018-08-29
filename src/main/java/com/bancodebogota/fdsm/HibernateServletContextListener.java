@@ -6,6 +6,10 @@
 package com.bancodebogota.fdsm;
 
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.hibernate.SessionFactory;
@@ -21,18 +25,14 @@ public class HibernateServletContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        URL url = HibernateServletContextListener.class.getResource("/hibernate.cfg.xml");
-        Configuration config = new Configuration();
-        config.configure(url);
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(config.getProperties()).build();
-        SessionFactory sf = config.buildSessionFactory(serviceRegistry);
-        sce.getServletContext().setAttribute("SessionFactory", sf);
+        EntityManagerFactory emFactory =emFactory = Persistence.createEntityManagerFactory("com.bancodebogota.fdsm");
+        sce.getServletContext().setAttribute("EntityManagerFactory", emFactory);      
+        
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        SessionFactory sf = (SessionFactory) sce.getServletContext().getAttribute("SessionFactory");
+        SessionFactory sf = (SessionFactory) sce.getServletContext().getAttribute("EntityManagerFactory");
         sf.close();
     }
 

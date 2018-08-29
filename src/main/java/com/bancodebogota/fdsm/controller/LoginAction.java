@@ -6,16 +6,22 @@
 package com.bancodebogota.fdsm.controller;
 
 import com.bancodebogota.fdsm.dao.LoginDao;
+import com.bancodebogota.fdsm.dao.LoginDaoImpl;
+import com.bancodebogota.fdsm.dao.LoginDaoJpaImpl;
 import com.bancodebogota.fdsm.dto.UserDto;
 import com.opensymphony.xwork2.ActionSupport;
+import javax.servlet.ServletContext;
+import org.apache.struts2.util.ServletContextAware;
+import org.hibernate.SessionFactory;
 
 /**
  *
  * @author jpramirez
  */
-public class LoginAction extends ActionSupport {
+public class LoginAction extends ActionSupport implements ServletContextAware {
 
     private UserDto userDto;
+    private ServletContext ctx;
 
     public UserDto getUserDto() {
         return userDto;
@@ -28,15 +34,25 @@ public class LoginAction extends ActionSupport {
     @Override
     public String execute() {
         //userDto = new UserDto();
-        
-        UserDto us =  LoginDao.getInstance().obtenerUsuario(userDto);
+        LoginDao loginDao =  LoginDaoImpl.getInstance();
+        UserDto us =  loginDao.obtenerUsuario(userDto);
         if(us==null){
              return ERROR;
         }else{
             return SUCCESS+"Tiles";
-        }
-
-        
+        }     
+    }
+    
+   
+    public String executeJpa() {
+        //userDto = new UserDto();
+        LoginDao loginDao = new LoginDaoJpaImpl(getSF());
+        UserDto us = loginDao.obtenerUsuario(userDto);
+        if(us==null){
+             return ERROR;
+        }else{
+            return SUCCESS+"Tiles";
+        }     
     }
 
     public void validate() {
@@ -48,4 +64,15 @@ public class LoginAction extends ActionSupport {
             addFieldError("userDto.password", "Password is required.");
         }
     }
+
+    @Override
+    public void setServletContext(ServletContext sc) {
+        this.ctx = sc;
+    }
+    
+    private SessionFactory getSF(){
+        SessionFactory sf = (SessionFactory) ctx.getAttribute("SessionFactory");
+        return sf;
+    }
+            
 }

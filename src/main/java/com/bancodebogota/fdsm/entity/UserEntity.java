@@ -1,20 +1,31 @@
-package com.bancodebogota.fdsm.dto;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.bancodebogota.fdsm.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author jpramirez
  */
-public class UserDto {
-    private String name;
+@Entity
+@Table(name = "users")
+public class UserEntity {
+    @Id
+    @Column(name = "login")
     private String login;
+    @Column(name = "email")
     private String email;
+    @Column(name = "password")
     private String password;
+    @Column(name = "name")
+    private String name;
 
     public String getPassword() {
         return password;
@@ -47,5 +58,5 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
-    } 
+    }    
 }

@@ -14,7 +14,7 @@
         <action name="index">
             <result>/index.jsp</result>
         </action>
-        <action name="login" class="com.bancodebogota.fdsm.controller.LoginAction" method="execute">
+        <action name="login" class="com.bancodebogota.fdsm.controller.LoginAction" method="executeJpa">
             <result name="success">/welcome.jsp</result>
             <result name="error">/loginErr.jsp</result>
             <result name="input">/index.jsp</result>

@@ -5,7 +5,7 @@
  */
 package com.bancodebogota.fdsm.controller;
 
- import com.bancodebogota.fdsm.dao.LoginDao;
+import com.bancodebogota.fdsm.dao.LoginDao;
 import com.bancodebogota.fdsm.dao.LoginDaoImpl;
 import com.bancodebogota.fdsm.dao.LoginDaoJpaImpl;
 import com.bancodebogota.fdsm.dto.UserDto;
@@ -14,7 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
 import org.apache.struts2.util.ServletContextAware;
-import org.hibernate.SessionFactory;
 
 /**
  *
@@ -36,31 +35,30 @@ public class LoginAction extends ActionSupport implements ServletContextAware {
     @Override
     public String execute() {
         //userDto = new UserDto();
-        LoginDao loginDao =  LoginDaoImpl.getInstance();
-        UserDto us =  loginDao.obtenerUsuario(userDto);
-        if(us==null){
-             return ERROR;
-        }else{
+        LoginDao loginDao = LoginDaoImpl.getInstance();
+        UserDto us = loginDao.obtenerUsuario(userDto);
+        if (us == null) {
+            return ERROR;
+        } else {
             this.userDto = us;
-            return SUCCESS+"Tiles";
-        }     
+            return SUCCESS + "Tiles";
+        }
     }
-    
-   
+
     public String executeJpa() {
         //userDto = new UserDto();
         LoginDao loginDao = new LoginDaoJpaImpl(getEM());
         UserDto us = loginDao.obtenerUsuario(userDto);
-        if(us==null){
-             return ERROR;
-        }else{
+        if (us == null) {
+            return ERROR;
+        } else {
             this.userDto = us;
-            return SUCCESS+"Tiles";
-        }     
+            return SUCCESS + "Tiles";
+        }
     }
 
     public void validate() {
-        if (  userDto.getLogin().length() == 0) {
+        if (userDto.getLogin().length() == 0) {
 
             addFieldError("userDto.login", "Login is required.");
         }
@@ -74,10 +72,10 @@ public class LoginAction extends ActionSupport implements ServletContextAware {
     public void setServletContext(ServletContext sc) {
         this.ctx = sc;
     }
-    
-    private EntityManager getEM(){
+
+    private EntityManager getEM() {
         EntityManagerFactory emf = (EntityManagerFactory) ctx.getAttribute("EntityManagerFactory");
         return emf.createEntityManager();
     }
-            
+
 }
